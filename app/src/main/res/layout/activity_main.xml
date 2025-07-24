@@ -7,6 +7,17 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btnBastir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bastır"
+        android:layout_margin="16dp"
+        android:layout_gravity="center_horizontal|bottom"
+        />
+
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

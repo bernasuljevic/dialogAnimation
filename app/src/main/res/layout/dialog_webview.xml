@@ -11,17 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:title="Benim Uygulamam"
-        app:titleTextColor="@android:color/white" />
+        android:title="@string/benim_uygulamam"
+        app:titleTextColor="@android:color/black" />
 
     <Button
         android:id="@+id/btnBastir"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bastır"
-        android:layout_marginTop="32dp"
-        android:layout_gravity="center_horizontal" />
-
+        android:text="@string/bast_r"
+        android:background="#800080"
+        android:textColor="#A672AF"
+        android:padding="16dp"/>
 
     <WebView
         android:id="@+id/webView"
