@@ -2,18 +2,16 @@ package com.edata.dialoganimation
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import com.google.android.material.snackbar.Snackbar
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import com.edata.dialoganimation.databinding.ActivityMainBinding
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,21 +26,46 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
+        // Bastır butonu tıklama
+        setOnClickListener {
+            Toast.makeText(this, "Bastır butonuna tıklandı!", Toast.LENGTH_SHORT).show()
+        }
+
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            showWebViewDialog("https://www.propay.com")//html ile buraya bir şeyler yaz
+        // FAB tıklama - WebView Dialog göster
+        binding.fab.setOnClickListener {
+            val htmlContent = """
+                <html>
+                <head>
+                    <style>
+                        body { font-family: sans-serif; background-color: #DDA0DD; padding: 20px; }
+                        h1 { color: ##4B0082; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Merhaba Propay</h1>
+                    <p>Ekranda yazı çıktı.</p>
+                    <button onclick="alert('Butona tıklandı!')">Tıkla</button>
+                </body>
+                </html>
+            """.trimIndent()
+
+            showWebViewDialog(htmlContent)
         }
     }
-    private fun showWebViewDialog(url: String) {
+
+    private fun showWebViewDialog(html: String) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_webview, null)
         val webView = dialogView.findViewById<WebView>(R.id.webView)
 
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
-        webView.loadUrl(url)
+
+        // HTML içeriğini WebView'e yükle
+        webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
 
         AlertDialog.Builder(this)
             .setTitle("WebView Dialog")
@@ -51,16 +74,12 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+    override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
@@ -69,7 +88,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+}
+
+private fun setOnClickListener(function: () -> Unit) {
+
+
 }
